@@ -11,7 +11,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.tom.atm.databinding.ActivityMainBinding
+import okhttp3.*
+import okio.ByteString
 import java.net.URL
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-
+    lateinit var websocket: WebSocket
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,13 +40,17 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
         //networking
-        
+//        webTesting()
+
+
+    }
+
+    private fun webTesting() {
         thread {
             val data = URL("https://www.ibm.com")
                 .readText()
             Log.d(TAG, "data: $data");
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
