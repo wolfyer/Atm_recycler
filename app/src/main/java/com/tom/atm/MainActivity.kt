@@ -1,6 +1,7 @@
 package com.tom.atm
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,9 +11,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.tom.atm.databinding.ActivityMainBinding
+import java.net.URL
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = MainActivity::class.java.simpleName
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
@@ -32,6 +36,14 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+        //networking
+        
+        thread {
+            val data = URL("https://www.ibm.com")
+                .readText()
+            Log.d(TAG, "data: $data");
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
