@@ -14,7 +14,7 @@ import com.tom.atm.databinding.FragmentFirstBinding
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
-
+    var remember = false
     private var _binding: FragmentFirstBinding? = null
 
     // This property is only valid between onCreateView and
@@ -34,21 +34,33 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pref = requireContext().getSharedPreferences("atm", Context.MODE_PRIVATE)
+        val checked = pref.getBoolean("rem_username", false)
+        binding.cbRemember.isChecked = checked
+        binding.cbRemember.setOnCheckedChangeListener { compoundButton, checked ->
+            remember = checked
+            pref.edit().putBoolean("rem_username", remember).apply()
+            if (!checked) {
+                pref.edit().putString("USER", "").apply()
+            }
+        }
         val prefUser = pref.getString("USER", "")
         if (prefUser != "") {
             binding.edUsername.setText(prefUser)
         }
+
         binding.buttonFirst.setOnClickListener {
             //Login stuff
             val username = binding.edUsername.text.toString()
             val password = binding.edPassword.text.toString()
             if (username == "jack" && password == "1234") {
                 //save username to preferences
-                val pref = requireContext().getSharedPreferences("atm", Context.MODE_PRIVATE)
-                pref.edit()
-                    .putString("USER", username)
-                    .putInt("LEVEL", 3)
-                    .apply() //.commit()
+                //val pref = requireContext().getSharedPreferences("atm", Context.MODE_PRIVATE)
+                if (remember) {
+                    pref.edit()
+                        .putString("USER", username)
+                        .putInt("LEVEL", 3)
+                        .apply() //.commit()
+                }
                 findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
             } else {
                 // error
