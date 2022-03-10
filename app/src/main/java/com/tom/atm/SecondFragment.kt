@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.tom.atm.databinding.FragmentSecondBinding
 import okhttp3.*
 import okio.ByteString
@@ -80,8 +81,9 @@ class SecondFragment : Fragment() {
         })
         binding.bSend.setOnClickListener {
             val message = binding.edMessage.text.toString()
-            val json = "{\"action\": \"N\", \"content\": \"$message\" }"
-            websocket.send(json)
+//            val json = "{\"action\": \"N\", \"content\": \"$message\" }"
+//            websocket.send(json)
+            websocket.send(Gson().toJson(Message("N", message)))
         }
     }
 
@@ -90,3 +92,5 @@ class SecondFragment : Fragment() {
         _binding = null
     }
 }
+
+data class Message(val action:String, val content: String)
