@@ -1,6 +1,7 @@
 package com.tom.atm
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -70,6 +71,11 @@ class FirstFragment : Fragment() {
                     .setPositiveButton("OK", null)
                     .show()
             }
+
+        }
+        binding.bLock.setOnClickListener {
+            val intent = Intent(context,VedioActivity::class.java)
+            startActivity(intent)
 
         }
     }
