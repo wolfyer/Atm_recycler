@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tom.atm.databinding.FragmentSecondBinding
+import com.tom.atm.databinding.RowChatroomBinding
 import okhttp3.*
 import okio.ByteString
 import java.util.concurrent.TimeUnit
@@ -102,15 +103,34 @@ class SecondFragment : Fragment() {
         binding.recycler.hasFixedSize()
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = ChatRoomAdapter()
+        //binding.recycler.adapter = ChatRoomAdapter2()
     }
     inner class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
             val view = layoutInflater.inflate(R.layout.row_chatroom,parent,false)
             return ChatRoomViewHolder(view)
             //layout檔變成viewholder
+            //val binding = RowChatroomBinding.inflate(layoutInflater,parent,false)
         }
 
         override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
+            val room = charRooms[position]
+            holder.host.setText(room.hostName)
+            holder.title.setText(room.titleName)
+        }
+
+        override fun getItemCount(): Int {
+            return charRooms.size
+        }
+
+    }
+    inner class ChatRoomAdapter2 :RecyclerView.Adapter<BindingViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
+            val binding = RowChatroomBinding.inflate(layoutInflater,parent,false)
+            return BindingViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
             val room = charRooms[position]
             holder.host.setText(room.hostName)
             holder.title.setText(room.titleName)
@@ -128,6 +148,12 @@ class SecondFragment : Fragment() {
         val host = view.findViewById<TextView>(R.id.chatroom_host_name)
         val title = view.findViewById<TextView>(R.id.chatroom_title)
     }
+    //use binding
+    inner class BindingViewHolder(val binding :RowChatroomBinding):RecyclerView.ViewHolder(binding.root){
+        val host = binding.chatroomHostName
+        val title = binding.chatroomTitle
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
