@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tom.atm.databinding.FragmentSecondBinding
 import okhttp3.*
@@ -17,6 +18,16 @@ import java.util.concurrent.TimeUnit
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
+    //設計圖
+
+    val charRooms = listOf<ChatRoom>(
+        ChatRoom("101101","Miau","Welcome!!"),
+        ChatRoom("101101","Miau2","Welcome!!2"),
+        ChatRoom("101101","Miau3","Welcome!!3"),
+        ChatRoom("101101","Miau4","Welcome!!4")
+    )
+    //專門用在一列裡面的layout
+
 
     private var _binding: FragmentSecondBinding? = null
 
@@ -85,6 +96,12 @@ class SecondFragment : Fragment() {
 //            websocket.send(json)
             websocket.send(Gson().toJson(Message("N", message)))
         }
+    }
+    //Recycler's Adapter
+
+    class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        //val host
+        //val title
     }
 
     override fun onDestroyView() {
