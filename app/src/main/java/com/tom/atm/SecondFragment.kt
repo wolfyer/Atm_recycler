@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tom.atm.databinding.FragmentSecondBinding
@@ -96,12 +98,35 @@ class SecondFragment : Fragment() {
 //            websocket.send(json)
             websocket.send(Gson().toJson(Message("N", message)))
         }
-    }
     //Recycler's Adapter
+        binding.recycler.hasFixedSize()
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.adapter = ChatRoomAdapter()
+    }
+    inner class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
+            val view = layoutInflater.inflate(R.layout.row_chatroom,parent,false)
+            return ChatRoomViewHolder(view)
+            //layout檔變成viewholder
+        }
 
-    class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        //val host
-        //val title
+        override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
+            val room = charRooms[position]
+            holder.host.setText(room.hostName)
+            holder.title.setText(room.titleName)
+        }
+
+        override fun getItemCount(): Int {
+            return charRooms.size
+        }
+
+    }
+
+
+
+    inner class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        val host = view.findViewById<TextView>(R.id.chatroom_host_name)
+        val title = view.findViewById<TextView>(R.id.chatroom_title)
     }
 
     override fun onDestroyView() {
